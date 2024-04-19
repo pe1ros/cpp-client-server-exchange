@@ -5,7 +5,7 @@
 
 #include "json.hpp"
 #include "Common.hpp"
-#include "Exchange.hpp"
+#include "exchange.h"
 
 using boost::asio::ip::tcp;
 
@@ -40,15 +40,15 @@ public:
         Order order;
         order.volume = request["Volume"];
         order.price = request["Price"];
-        order.userId = request["UserId"];
+        order.user_id = request["UserId"];
         order.type = request["Type"] == "Buy" ? Type::Buy : Type::Sell;
 
         exchange_.AddOrder(order);
     }
 
-    std::string GetUserBalance(const std::string& userId)
+    std::string GetUserBalance(const std::string& user_id)
     {
-        return exchange_.GetBalance(userId);
+        return exchange_.GetBalance(user_id);
     }
 
 private:

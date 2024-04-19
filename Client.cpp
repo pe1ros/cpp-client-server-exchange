@@ -4,7 +4,7 @@
 
 #include "Common.hpp"
 #include "json.hpp"
-#include "Exchange.hpp"
+#include "exchange.h"
 
 using boost::asio::ip::tcp;
 
@@ -71,7 +71,7 @@ int main()
         boost::asio::io_service io_service;
 
         tcp::resolver resolver(io_service);
-        tcp::resolver::query query(tcp::v4(), "10.96.183.71", std::to_string(port));
+        tcp::resolver::query query(tcp::v4(), "127.0.0.1", std::to_string(port));
         tcp::resolver::iterator iterator = resolver.resolve(query);
 
         tcp::socket s(io_service);
