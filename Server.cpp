@@ -4,7 +4,7 @@
 #include <boost/asio.hpp>
 
 #include "json.hpp"
-#include "Common.hpp"
+#include "common.h"
 #include "exchange.h"
 
 using boost::asio::ip::tcp;
