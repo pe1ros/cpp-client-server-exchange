@@ -20,9 +20,10 @@ struct Order {
 };
 
 inline std::ostream& operator<<(std::ostream& oss, const Order& order) {
+    oss << "/////////////////////" << '\n';
     oss << "Volume: " << order.volume << "\n"
         << "Price: " << order.price << "\n"
-        << "Type: " << (order.type == Type::Buy? "Buy" : "Sell") << "\n"
+        << "Type: " << (order.type == Type::Buy ? "Buy" : "Sell") << "\n"
         << "User id: " << order.user_id << "\n";
     return oss;
 }

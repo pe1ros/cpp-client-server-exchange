@@ -12,20 +12,18 @@ using boost::asio::ip::tcp;
 class Core
 {
 public:
-    // "Регистрирует" нового пользователя и возвращает его ID.
-    std::string RegisterNewUser(const std::string& aUserName)
-    {
-        size_t newUserId = mUsers.size();
-        mUsers[newUserId] = aUserName;
+    std::string RegisterNewUser(const std::string& user_name)
+{
+        size_t new_user_id = users_.size();
+        users_[new_user_id] = user_name;
 
-        return std::to_string(newUserId);
+        return std::to_string(new_user_id);
     }
 
-    // Запрос имени клиента по ID
-    std::string GetUserName(const std::string& aUserId)
+    std::string GetUserNameById(const std::string& aUserId)
     {
-        const auto userIt = mUsers.find(std::stoi(aUserId));
-        if (userIt == mUsers.cend())
+        const auto userIt = users_.find(std::stoi(aUserId));
+        if (userIt == users_.cend())
         {
             return "Error! Unknown User";
         }
@@ -53,7 +51,7 @@ public:
 
 private:
     // <UserId, UserName>
-    std::map<size_t, std::string> mUsers;
+    std::map<size_t, std::string> users_;
     Exchange exchange_;
 };
 
@@ -93,16 +91,16 @@ public:
             auto j = nlohmann::json::parse(data_);
 
             // Обработка запроса в зависимости от типа запроса
-            auto reqType = j["ReqType"];
+            auto req_type = j["ReqType"];
             std::string reply;
-            if (reqType == Requests::Registration) {
+            if (req_type == Requests::Registration) {
                 reply = GetCore().RegisterNewUser(j["Message"]);
-            } else if (reqType == Requests::Hello) {
-                reply = "Hello, " + GetCore().GetUserName(j["UserId"]) + "!\n";
-            } else if (reqType == Requests::Trading) {
+            } else if (req_type == Requests::Hello) {
+                reply = "Hello, " + GetCore().GetUserNameById(j["UserId"]) + "!\n";
+            } else if (req_type == Requests::Trading) {
                 GetCore().ProcessTradingRequest(j);
                 reply = "Order added\n";
-            } else if (reqType == Requests::Balance) {
+            } else if (req_type == Requests::Balance) {
                 reply = GetCore().GetUserBalance(j["UserId"]);
             } else  {
                 reply = "Error! Unknown request type";
